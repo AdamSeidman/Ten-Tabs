@@ -13,8 +13,20 @@ function onYouTubeIframeAPIReady() {
 
 function createPlayer(num) {
     return new YT.Player(`player${num}`, {
-        videoId: 'f8mL0_4GeV0'
+        videoId: 'f8mL0_4GeV0',
+        playerVars: {
+            'loop': 1
+        },
+        events: {
+            // TODO can I put the checks in here?
+            onStateChange: onPlayerStateChange
+        }
     });
+}
+
+function onPlayerStateChange(event) {
+    if (event.data !== 0 || !timerRunning) return;
+    event.target.playVideo();
 }
 
 function unmuteAll() {
