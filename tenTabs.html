@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ten Tabs</title>
+    <link rel="stylesheet" href="./tabStyles.css">
+    <script type="text/javascript" src="./crc.js"></script>
+    <script type="text/javascript" src="./nodeNatural.min.js"></script>
+</head>
+<body>
+    <div class="introWrapper">
+        <input type="text" id="tagInput" placeholder="Tabs String Here..."><br>
+        <button onclick="loadVideoTag()">Start Videos</button><br>
+    </div>
+    <!--button onclick="stopAllVideos()">Stop Videos</button-->
+    <div class="gameplayWrapper hidden">
+        <h1>Ten Tabs!</h1>
+        <hr><br>
+        <input type="text" id="gameplayInput" placeholder="Make your guess">
+        <h3 id="timer">00:00</h3>
+        <ul id="foundVideos"></ul>
+    </div>
+    <div class="wrapper" style="display:none;">
+        <div id="player0"></div>
+        <div id="player1"></div>
+        <div id="player2"></div>
+        <div id="player3"></div>
+        <div id="player4"></div>
+        <div id="player5"></div>
+        <div id="player6"></div>
+        <div id="player7"></div>
+        <div id="player8"></div>
+        <div id="player9"></div>
+    </div>
+    <script type="text/javascript" src="./ten-tabs.js"></script>
+    <script type="text/javascript" src="./similarity.js"></script>
+</body>
+</html>
