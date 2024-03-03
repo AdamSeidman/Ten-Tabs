@@ -139,6 +139,7 @@ function startGameMasterInit() {
             introWrapper.classList.toggle('hidden');
             gameplayWrapper.classList.toggle('hidden');
             results.innerHTML = '';
+            setTimeout(unmuteAll, 150);
 
             // enable game // TODO
             // setTimeout for resuming all
@@ -192,5 +193,4 @@ function stopTimer() {
     return true;
 }
 
-// ?JU6f55o9IQVQVae5bl15LYDXwzTlZlet7n1da6tlouNCB55lB7cTYztCSbTEI3is4sbwTT7dosY9UkWMjyK3kpzBkOE_m3SvHlZxUc4cMMok0sa1348518886
 // ?I9o55fU6J41lb5eaQVVIZlTzwXYDL1t6ad1nt7eBBl55BCuNoKTbSCtzTYcQTwbs4s3iIlWkU9Ysdo7GkBzpk3yKjuZlHvS3_mEo0koMMcc4Uga1395979446
