@@ -61,7 +61,7 @@ var videosFound = 0;
 var videoError = false;
 var timerRunning = false;
 
-function finalErrorcheck(player, index) {
+function finalErrorCheck(player, index) {
     setTimeout(() => {
         if (player.getPlayerState() === -1) {
             alert(`Video ${index} is unplayable.`);
@@ -84,7 +84,7 @@ function checkVideoStatus(player, index) {
         else if (state === -1)
         {
             console.log('trying');
-            finalErrorcheck(player, index);
+            finalErrorCheck(player, index);
         }
         else
         {

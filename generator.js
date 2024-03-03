@@ -45,10 +45,15 @@ function processId(index) {
         let state = players[index].getPlayerState();
         if (state === undefined || Math.abs(state) !== 1) {
             processId(index);
+        } else if (state === -1) {
+            setTimeout(() => {
+                if (players[index].getPlayerState() === -1) {
+                    invalidVideos.push(index)
+                }
+                players[index].stopVideo();
+                processedCount += 1;
+            }, 750);
         } else {
-            if (state === -1) {
-                invalidVideos.push(index + 1);
-            }
             players[index].stopVideo();
             processedCount += 1;
         }
@@ -62,11 +67,13 @@ function startMasterThread() {
         } else if (invalidVideos.length === 1) {
             textOutput.innerHTML = `Video ${invalidVideos[0]} is not playable external to youtube.`;
         } else if (invalidVideos.length > 1) {
+            invalidVideos.sort();
+            invalidVideos = invalidVideos.map(x => x + 1);
             let last = invalidVideos.pop();
-            if (list.length > 1) {
-                list[list.length - 1] = `${list[list.length - 1]},`
+            if (invalidVideos.length > 1) {
+                invalidVideos[invalidVideos.length - 1] = `${invalidVideos[invalidVideos.length - 1]},`
             }
-            textOutput.innerHTML = `Videos ${list.join(', ')} and ${last} are not playable external to youtube.`
+            textOutput.innerHTML = `Videos ${invalidVideos.join(', ')} & ${last} are not playable external to youtube.`
         } else {
             let text = '';
             for (let i = 0; i < 11; i++) {
