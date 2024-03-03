@@ -139,6 +139,7 @@ function startGameMasterInit() {
             introWrapper.classList.toggle('hidden');
             gameplayWrapper.classList.toggle('hidden');
             results.innerHTML = '';
+            players.forEach(x => x.setLoop(true));
             setTimeout(unmuteAll, 150);
 
             // enable game // TODO
