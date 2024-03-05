@@ -108,6 +108,7 @@ var Game = {
                 Game.elements.gameplayInput.value = '';
                 delete Game.titles[`x${i}`];
                 if (Object.keys(Game.titles).length === 0) {
+                    Game.elements.gameplayInput.value = '';
                     Game.victory();
                 }
                 return;
