@@ -80,10 +80,10 @@ var Game = {
         if (Game.state !== GameStates.PLAYING) {
             return null;
         }
-        Game.stopTimer();
         Game.elements.timerEl.classList.add('victory');
+        Game.stopTimer();
         Game.state = GameStates.OVER;
-        alert('You win!');
+        setTimeout(() => alert('You win!'), 50);
     },
     setDifficulty: difficulty => {
         if (typeof difficulty != 'number') {
@@ -102,7 +102,7 @@ var Game = {
                 let el = document.createElement('li');
                 let author = Game.players[i].playerInfo.videoData.author;
                 author = (author == undefined || author.trim().length == 0)? '' : `- ${author}`;
-                el.innerHTML = `${Game.titles[`x${i}`]} ${Game.players[i].playerInfo.videoData.author}`;
+                el.innerHTML = `${Game.titles[`x${i}`]} ${author}`;
                 Game.elements.results.append(el);
                 Game.players[i].stopVideo();
                 Game.elements.gameplayInput.value = '';
