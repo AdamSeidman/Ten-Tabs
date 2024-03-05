@@ -9,31 +9,34 @@
     <script type="text/javascript" src="./Lib/nodeNatural.min.js"></script>
 </head>
 <body>
-    <h1>Ten Tabs!</h1>
-    <hr><br>
-    <div class="introWrapper">
-        <input type="text" id="tagInput" placeholder="Tabs String Here..."><br>
-        <button onclick="loadVideoTag()">Start Videos</button><br>
+    <div class="wrapper">
+        <h1>Ten Tabs!</h1>
+        <hr><br>
+        <div class="introWrapper">
+            <input type="text" id="tagInput" placeholder="Tabs String Here..."><br>
+            <button id="gameLoadBtn" onclick="loadVideoTag()">Start Videos</button><br>
+        </div>
+        <div class="gameplayWrapper hidden">
+            <input type="text" id="gameplayInput" placeholder="Make your guess">
+            <h4 id="gameplayInfo">0 Guesses / 10 Remaining</h4>
+            <h3 id="timer">00:00</h3>
+            <ul id="foundVideos"></ul>
+        </div>
+        <div class="wrapper" style="display:none;">
+            <div id="player0"></div>
+            <div id="player1"></div>
+            <div id="player2"></div>
+            <div id="player3"></div>
+            <div id="player4"></div>
+            <div id="player5"></div>
+            <div id="player6"></div>
+            <div id="player7"></div>
+            <div id="player8"></div>
+            <div id="player9"></div>
+        </div>
+        <script type="text/javascript" src="./ten-tabs.js"></script>
+        <script type="text/javascript" src="./Lib/similarity.js"></script>
+        v0.0.3
     </div>
-    <div class="gameplayWrapper hidden">
-        <input type="text" id="gameplayInput" placeholder="Make your guess">
-        <h3 id="timer">00:00</h3>
-        <ul id="foundVideos"></ul>
-    </div>
-    <div class="wrapper" style="display:none;">
-        <div id="player0"></div>
-        <div id="player1"></div>
-        <div id="player2"></div>
-        <div id="player3"></div>
-        <div id="player4"></div>
-        <div id="player5"></div>
-        <div id="player6"></div>
-        <div id="player7"></div>
-        <div id="player8"></div>
-        <div id="player9"></div>
-    </div>
-    <script type="text/javascript" src="./ten-tabs.js"></script>
-    <script type="text/javascript" src="./Lib/similarity.js"></script>
-    v0.0.2
 </body>
 </html>

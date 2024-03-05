@@ -19,7 +19,9 @@ var Game = {
         results: document.getElementById('foundVideos'),
         gameplayInput: document.getElementById('gameplayInput'),
         timerEl: document.getElementById('timer'),
-        tagInput: document.getElementById('tagInput')
+        tagInput: document.getElementById('tagInput'),
+        gameplayInfo: document.getElementById('gameplayInfo'),
+        gameLoadBtn: document.getElementById('gameLoadBtn')
     },
     players: [],
     unmuteAll: () => {
@@ -49,7 +51,8 @@ var Game = {
         difficulty: 0.5,
         apiLoaded: false,
         videosLoaded: 0,
-        videoError: false
+        videoError: false,
+        guesses: 0
     },
     startTimer: () => {
         if (Game.data.timerRunning) {
@@ -97,6 +100,7 @@ var Game = {
             console.error('Function getSimilarity() is undefined!');
             return;
         }
+        Game.data.guesses += 1;
         for (let i = 0; i < MAX_TABS; i++) {
             if (Game.titles[`x${i}`] !== undefined && getSimilarity(str, Game.titles[`x${i}`]) >= Game.data.difficulty) {
                 let el = document.createElement('li');
@@ -111,9 +115,11 @@ var Game = {
                     Game.elements.gameplayInput.value = '';
                     Game.victory();
                 }
+                Game.updateGameplayInfo();
                 return;
             }
         }
+        Game.updateGameplayInfo();
         Game.elements.gameplayInput.value = '';
     },
     loadVideos: arr => {
@@ -134,6 +140,12 @@ var Game = {
         Game.elements.gameplayWrapper.classList.toggle('hidden');
         Game.elements.tagInput.value = '';
         Game.elements.tagInput.classList.remove('hidden');
+        Game.elements.gameplayInfo.innerHTML = '0 Guesses / 10 Remaining';
+        Game.elements.timerEl.innerHTML = '00:00';
+        Game.data.guesses = 0;
+    },
+    updateGameplayInfo: () => {
+        Game.elements.gameplayInfo.innerHTML = `${Game.data.guesses} Guess${Game.data.guesses === 1? '' : 'es'} / ${Object.keys(Game.titles).length} Remaining`;
     }
 };
 
@@ -210,21 +222,32 @@ function loadVideoTag() {
         return;
     }
 
+    Game.elements.gameLoadBtn.classList.add('wait');
+    document.body.classList.add('wait');
+
     let videos = decodeVideoString(Game.elements.tagInput.value);
     if (videos === undefined || videos.length < MAX_TABS) {
         alert('Could not decode game string.');
+        Game.elements.gameLoadBtn.classList.remove('wait');
+        document.body.classList.remove('wait');
         return;
     }
-    Game.loadVideos(videos);
 
     var checkStatus = function (player, index, final) {
         setTimeout(() => {
-            let state = player.getPlayerState();
+            let state;
+            try {
+                state = player.getPlayerState();
+            } catch (error) {
+                state = 3;
+            }
             if (state === undefined || Math.abs(state) !== 1) {
                 checkStatus(player, index);
             } else if (final && state !== 1) {
                 alert(`Video ${index} is unplayable.`);
                 Game.data.videoError = true;
+                Game.elements.gameLoadBtn.classList.remove('wait');
+                document.body.classList.remove('wait');
             } else if (state === 1) {
                 Game.titles[`x${index}`] = player.videoTitle;
                 Game.data.videosLoaded += 1;
@@ -237,7 +260,9 @@ function loadVideoTag() {
 
     var masterThread = function () {
         if (Game.data.timerRunning) {
-            console.error('Logic error in masterThread.');
+            alert('Logic error in masterThread.');
+            Game.elements.gameLoadBtn.classList.remove('wait');
+            document.body.classList.remove('wait');
         } else if (Game.data.videosLoaded >= MAX_TABS) {
             console.log('Found all videos. Starting timer.');
             Game.startTimer();
@@ -247,17 +272,35 @@ function loadVideoTag() {
             Game.elements.results.innerHTML = '';
             setTimeout(Game.unmuteAll, 150);
             Game.state = GameStates.PLAYING;
+            Game.elements.gameLoadBtn.classList.remove('wait');
+            document.body.classList.remove('wait');
         } else if (Game.data.videoError) {
             console.log('Closing master timer thread due to video error.');
             Game.data.videoError = false;
+            Game.elements.gameLoadBtn.classList.remove('wait');
+            document.body.classList.remove('wait');
         } else {
             console.log('Rescheduling master thread.');
             setTimeout(masterThread, 100);
         }
     }
 
-    Game.players.forEach((x, n) => checkStatus(x, n));
-    masterThread();
+    var load = function () {
+        let foundError = false;
+        try {
+            Game.loadVideos(videos);
+        } catch (error) {
+            console.error(error);
+            foundError = true;
+        }
+        if (foundError) {
+            setTimeout(load, 200);
+        } else {
+            Game.players.forEach((x, n) => checkStatus(x, n));
+            masterThread();
+        }
+    }
+    load();
 }
 
 // ?I9o55fU6J41lb5eaQVVIZlTzwXYDL1t6ad1nt7eBBl55BCuNoKTbSCtzTYcQTwbs4s3iIlWkU9Ysdo7GkBzpk3yKjuZlHvS3_mEo0koMMcc4Uga1395979446
