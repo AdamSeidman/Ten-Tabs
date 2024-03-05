@@ -137,7 +137,6 @@ Game.elements.firstScriptTag.parentNode.insertBefore(Game.elements.tag, Game.ele
 function onPlayerStateChange(event) { // TODO
     if (event.data !== 0 || !(Game.state === GameStates.PLAYING)) return;
     event.target.playVideo();
-
 }
 
 function onYouTubeIframeAPIReady() {
@@ -150,6 +149,12 @@ function onYouTubeIframeAPIReady() {
         })
     }
     Game.data.apiLoaded = true;
+    let id = `${window.location.search}`
+    if (id.length > 0) {
+        setTimeout(() => {
+            loadVideoTag(id);
+        }, 5000);
+    }
 }
 
 function decodeVideoString(arrStr) {
@@ -183,16 +188,16 @@ Game.elements.gameplayInput.addEventListener('keypress', e => {
     }
 });
 
-function loadVideoTag() {
+function loadVideoTag(bypass) {
     Game.data.videosLoaded = 0;
     Game.data.videoError = false;
 
-    if (!Game.data.apiLoaded) {
+    if (!bypass && !Game.data.apiLoaded) {
         alert('Error! Game API has not loaded.');
         return;
     }
 
-    let videos = decodeVideoString(Game.elements.tagInput.value);
+    let videos = decodeVideoString(bypass || Game.elements.tagInput.value);
     if (videos === undefined || videos.length < MAX_TABS) {
         alert('Could not decode game string.');
         return;
