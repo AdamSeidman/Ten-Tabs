@@ -1,17 +1,35 @@
+body,html {
+    margin: 0;
+    padding: 0;
+}
+
+* {
+    box-sizing: border-box;
+}
+
 body {
-    background: #500000;
-    padding-top: 20px;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background-image: linear-gradient(135deg, #500000, #911818, #500000);
+    overflow-x: hidden;
+}
+
+.wrapper {
+    width: 100%;
+    text-align: center;
 }
 
 input[type=text] {
-    width: 98%;
+    width: 85%;
     padding: 12px 20px;
     margin: 10px;
     box-sizing: border-box;
 }
 
 button {
-    background-color: firebrick;
+    background-color: #e14343;
     color: black;
     display: block;
     font-weight: bold;
@@ -23,7 +41,7 @@ button {
     text-transform: uppercase;
     line-height: 40px;
     text-align: center;
-    outline: none;
+    outline: 1px solid black;
     cursor: pointer;
     border-radius: 5px;
 }
@@ -37,7 +55,7 @@ button {
 }
 
 #timer, h1, hr, #gameplayInfo {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Source Sans Pro', Arial, Helvetica, sans-serif;
     font-size: 3em;
     text-align: center;
     color: darkgrey;
@@ -77,4 +95,8 @@ li::before {
 h1 {
     color: white;
     text-shadow: -1px -1px 0px black, 1px -1px 0px black, -1px 1px 0px black, 1px 1px 0px black;
+}
+
+input:focus {
+    outline:none;
 }
