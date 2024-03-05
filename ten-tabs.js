@@ -21,7 +21,8 @@ var Game = {
         timerEl: document.getElementById('timer'),
         tagInput: document.getElementById('tagInput'),
         gameplayInfo: document.getElementById('gameplayInfo'),
-        gameLoadBtn: document.getElementById('gameLoadBtn')
+        gameLoadBtn: document.getElementById('gameLoadBtn'),
+        altInputText: document.getElementById('altInputText')
     },
     players: [],
     unmuteAll: () => {
@@ -135,6 +136,7 @@ var Game = {
         return true;
     },
     reset: () => {
+        Game.elements.tagInput.classList.add('hidden');
         Game.elements.timerEl.classList.remove('victory');
         Game.elements.introWrapper.classList.toggle('hidden');
         Game.elements.gameplayWrapper.classList.toggle('hidden');
@@ -204,6 +206,7 @@ function onYouTubeIframeAPIReady() {
     } else {
         Game.elements.tagInput.value = id;
         Game.elements.tagInput.classList.add('hidden');
+        Game.elements.altInputText.classList.remove('hidden');
     }
 }
 

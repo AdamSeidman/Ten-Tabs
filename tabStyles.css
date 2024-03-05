@@ -61,6 +61,20 @@ button {
     color: darkgrey;
 }
 
+h1, #altInputText {
+    color: white;
+    text-shadow: -1px -1px 0px black, 1px -1px 0px black, -1px 1px 0px black, 1px 1px 0px black;
+}
+
+h3#altInputText {
+    font-family: 'Source Sans Pro', Arial, Helvetica, sans-serif;
+    font-size: 2.5em;
+    text-align: center;
+    color: #F0F0F0;
+    margin: 5px;
+    margin-bottom: -30px;
+}
+
 #timer {
     margin-top: 0;
 }
@@ -90,11 +104,6 @@ li::before {
     content: "\2022";
     position: absolute;
     left: -1.2em;
-}
-
-h1 {
-    color: white;
-    text-shadow: -1px -1px 0px black, 1px -1px 0px black, -1px 1px 0px black, 1px 1px 0px black;
 }
 
 input:focus {
