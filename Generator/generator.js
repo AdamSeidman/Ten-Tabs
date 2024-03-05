@@ -36,6 +36,24 @@ function isAlphaNumeric(str) {
     return true;
 }
 
+function enableCopyButtons(enabled) {
+    if (typeof enabled !== 'boolean') return;
+    let copyWrapper = document.getElementById('copyWrapper');
+    if (enabled) {
+        copyWrapper.classList.add('hidden');
+    } else {
+        copyWrapper.classList.remove('hidden');
+    }
+}
+
+function copyUrlToClipboard() {
+    navigator.clipboard.writeText(`https://Seidman-Ad.am/Ten-Tabs/${textOutput.innerHTML}`);
+}
+
+function copyStringToClipboard() {
+    navigator.clipboard.writeText(textOutput.innerHTML);
+}
+
 var invalidVideos = [];
 var processedCount = 0;
 var ids = [];
@@ -82,6 +100,7 @@ function startMasterThread() {
                 }
             }
             textOutput.innerHTML = `?${text}a${crc32(text)}`;
+            enableCopyButtons(true);
         }
     }, 100);
 }
@@ -90,7 +109,9 @@ function startMakeId() {
     let error = false;
     let duplicate = false;
     let blank = false;
-    ids = []
+    ids = [];
+    enableCopyButtons(false);
+    textOutput.innerHTML = 'Working...';
     Array.from(document.getElementsByClassName('linkInput')).forEach(input => {
         input = input.value.trim().replace(/\\/g, "/");
         let valid = /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube(-nocookie)?\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|live\/|v\/)?)([\w\-]+)(\S+)?$/;

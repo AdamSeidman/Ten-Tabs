@@ -19,7 +19,17 @@
     8&nbsp;&nbsp;<input type="text" class="linkInput" placeholder="Video Link Here..."><br>
     9&nbsp;&nbsp;<input type="text" class="linkInput" placeholder="Video Link Here..."><br>
     10<input type="text" class="linkInput" placeholder="Video Link Here..."><br>
-    <button onclick="startMakeId()">Submit</button><br>
+    <div class="buttonContainer">
+        <button onclick="startMakeId()">Submit</button>
+        <div id="copyWrapper" class="hidden">
+            <button class="copyButton" title="Get string which can be pasted into the game." onclick="copyStringToClipboard()">
+                Copy String
+            </button>
+            <button class="copyButton" title="Get a URL which will auto-load your game." onclick="copyUrlToClipboard()">
+                Copy Full URL
+            </button>
+        </div>
+    </div>
     <strong>Result String:</strong><br>
     <span id="textOutput"></span>
     <div id="wrapper" style="display:none;">
@@ -35,5 +45,6 @@
         <div id="player9"></div>
     </div>
     <script type="text/javascript" src="./generator.js"></script>
+    <br>v0.0.1
 </body>
 </html>
