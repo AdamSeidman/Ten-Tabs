@@ -63,7 +63,7 @@ button:hover {
     margin: 0px 200px;
 }
 
-#timer, h1, hr, #gameplayInfo {
+#timer, h1, hr, .gameplayInfo {
     font-family: 'Source Sans Pro', Arial, Helvetica, sans-serif;
     font-size: 3em;
     text-align: center;
@@ -88,9 +88,10 @@ h3#altInputText {
     margin-top: 0;
 }
 
-#gameplayInfo {
+.gameplayInfo {
     color: black;
     font-size: 1.5em;
+    margin: 0.5em;
 }
 
 h3#timer.victory {

@@ -20,7 +20,7 @@ var Game = {
         gameplayInput: document.getElementById('gameplayInput'),
         timerEl: document.getElementById('timer'),
         tagInput: document.getElementById('tagInput'),
-        gameplayInfo: document.getElementById('gameplayInfo'),
+        gameplayInfo: document.getElementsByClassName('gameplayInfo'),
         gameLoadBtn: document.getElementById('gameLoadBtn'),
         altInputText: document.getElementById('altInputText'),
         messageEl: document.getElementById('message')
@@ -162,12 +162,14 @@ var Game = {
         Game.elements.gameplayWrapper.classList.toggle('hidden');
         Game.elements.tagInput.value = '';
         Game.elements.tagInput.classList.remove('hidden');
-        Game.elements.gameplayInfo.innerHTML = '0 Guesses / 10 Remaining';
+        Game.elements.gameplayInfo[0].innerHTML = '0 Guesses / 0 Correct';
+        Game.elements.gameplayInfo[1].innerHTML = '10 Remaining';
         Game.elements.timerEl.innerHTML = '00:00';
         Game.data.guesses = 0;
     },
     updateGameplayInfo: () => {
-        Game.elements.gameplayInfo.innerHTML = `${Game.data.guesses} Guess${Game.data.guesses === 1? '' : 'es'} / ${Object.keys(Game.titles).length} Remaining`;
+        Game.elements.gameplayInfo.innerHTML = `${Game.data.guesses} Guess${Game.data.guesses === 1? '' : 'es'} / ${MAX_TABS - Object.keys(Game.titles).length} Correct`;
+        Game.elements.gameplayInfo[1].innnerHTML = `${Object.keys(Game.titles).length} Remaining`;
     },
     showMessage: (msg, time) => {
         Game.elements.messageEl.innerHTML = msg;
@@ -243,7 +245,7 @@ function onYouTubeIframeAPIReady() {
 
     setTimeout(() => {
         Game.elements.gameLoadBtn.disabled = false;
-    }, 2500);
+    }, 5000);
 }
 
 Game.elements.gameplayInput.addEventListener('keypress', e => {
