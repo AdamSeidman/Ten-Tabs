@@ -37,3 +37,14 @@ const getSimilarity = function (phrase1, phrase2) {
     const similarity = cosineSimilarity(vec1, vec2);
     return similarity
 }
+
+const getBestSimilarity = function (phrase, arr) {
+    if (typeof phrase !== 'string' || !Array.isArray(arr)) {
+        return 0;
+    }
+    let max = 0;
+    arr.forEach(x => {
+        max = Math.max(max, getSimilarity(phrase, x));
+    });
+    return max;
+}

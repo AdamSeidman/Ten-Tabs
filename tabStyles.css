@@ -46,6 +46,15 @@ button {
     border-radius: 5px;
 }
 
+button:disabled {
+    background-color: #be5555;
+    cursor: wait;
+}
+
+button:hover {
+    background-color: #e63636;
+}
+
 .wait {
     cursor: wait;
 }
@@ -153,7 +162,7 @@ input:focus {
   position: absolute;
   left: 50%;
   top: 100px;
-  color: #fff;
+  color: #FFF;
   background-color: rgba(0, 0, 0, 0.85);
   padding: 15px 20px;
   z-index: 2;
@@ -165,4 +174,10 @@ input:focus {
 
 .transparent {
     opacity: 0;
+}
+
+.version {
+    position: fixed;
+    bottom: 1.5em;
+    left: 1.5em;
 }

@@ -106,8 +106,8 @@ var Game = {
         return Game.data.threshold;
     },
     makeGuess: str => {
-        if (getSimilarity === undefined) {
-            console.error('Function getSimilarity() is undefined!');
+        if (getSimilarity === undefined || getBestSimilarity === undefined) {
+            console.error('Similarity function(s) are undefined!');
             return;
         }
         Game.data.guesses += 1;
@@ -116,12 +116,12 @@ var Game = {
             if (Game.titles[`x${i}`] === undefined) {
                 continue;
             }
-            let similarity = getSimilarity(str, Game.titles[`x${i}`]);
+            let similarity = getBestSimilarity(str, Game.titles[`x${i}`]);
             if (similarity >= Game.data.difficulty) {
                 let el = document.createElement('li');
                 let author = Game.players[i].playerInfo.videoData.author;
                 author = (author == undefined || author.trim().length == 0)? '' : `- ${author}`;
-                el.innerHTML = `${Game.titles[`x${i}`]} ${author}`;
+                el.innerHTML = `${Game.titles[`x${i}`][0]} ${author}`;
                 Game.elements.results.append(el);
                 Game.players[i].stopVideo();
                 Game.elements.gameplayInput.value = '';
@@ -240,6 +240,10 @@ function onYouTubeIframeAPIReady() {
         Game.elements.tagInput.classList.add('hidden');
         Game.elements.altInputText.classList.remove('hidden');
     }
+
+    setTimeout(() => {
+        Game.elements.gameLoadBtn.disabled = false;
+    }, 2500);
 }
 
 Game.elements.gameplayInput.addEventListener('keypress', e => {
@@ -292,7 +296,21 @@ function loadVideoTag() {
                 Game.elements.gameLoadBtn.classList.remove('wait');
                 document.body.classList.remove('wait');
             } else if (state === 1) {
-                Game.titles[`x${index}`] = player.videoTitle;
+                let filtered = player.videoTitle.split(' ').filter(x => x.length > 2).join(' ');
+                function onlyUnique(value, index, array) {
+                    return array.indexOf(value) === index;
+                }                  
+                Game.titles[`x${index}`] = [
+                    player.videoTitle,
+                    filtered,
+                    player.videoTitle.length > 15? `${player.videoTitle} ${player.playerInfo.videoData.author}` : filtered,
+                    filtered.length > 15? `${filtered} ${player.playerInfo.videoData.author}` : filtered,
+                    player.videoTitle.split(' ').filter(x => x.length < 9).join(' ')
+                ].filter(x => x.trim().length > 0);
+                Game.titles[`x${index}`] = Game.titles[`x${index}`].filter(onlyUnique);
+                if (Game.titles[`x${index}`].length === 0) {
+                    Game.titles[`x${index}`] = ['the'];
+                }
                 Game.data.videosLoaded += 1;
                 console.log(`Found video ${index + 1}.`);
             } else {
