@@ -55,7 +55,8 @@ var Game = {
         apiLoaded: false,
         videosLoaded: 0,
         videoError: false,
-        guesses: 0
+        guesses: 0,
+        results: ''
     },
     startTimer: () => {
         if (Game.data.timerRunning) {
@@ -89,17 +90,17 @@ var Game = {
         Game.elements.timerEl.classList.add('victory');
         Game.stopTimer();
         Game.state = GameStates.OVER;
-        setTimeout(() => alert('You win!'), 50);
+        setTimeout(() => Game.showMessage('You win!', 3500), 50);
     },
     setDifficulty: difficulty => {
-        if (typeof difficulty != 'number') {
+        if (typeof difficulty != 'number' || difficulty <= Game.data.threshold) {
             return false;
         }
         Game.data.difficulty = difficulty;
         return Game.data.difficulty;
     },
     setCloseThreshold: threshold => {
-        if (typeof threshold != 'number') {
+        if (typeof threshold != 'number' || threshold >= Game.data.difficulty) {
             return false;
         }
         Game.data.threshold = threshold;
@@ -111,6 +112,7 @@ var Game = {
             return;
         }
         Game.data.guesses += 1;
+        let bestSimilarity = 0.0;
         let close = false;
         for (let i = 0; i < MAX_TABS; i++) {
             if (Game.titles[`x${i}`] === undefined) {
@@ -131,10 +133,23 @@ var Game = {
                     Game.victory();
                 }
                 Game.updateGameplayInfo();
+                if (PastaMap !== undefined) {
+                    Game.data.results += PastaMap[`${i}`];
+                }
                 return;
             } else if (similarity >= Game.data.closeThreshold) {
+                bestSimilarity = Math.max(similarity, bestSimilarity);
                 close = true;
             }
+        }
+        if (PastaMap !== undefined) {
+            let symbol = PastaMap.wrong;
+            if (bestSimilarity >= ((Game.data.difficulty - Game.data.closeThreshold) / 2) + Game.data.closeThreshold) {
+                symbol = PastaMap.closer;
+            } else if (bestSimilarity >= Game.data.closeThreshold) {
+                symbol = PastaMap.close;
+            }
+            Game.data.results += symbol;
         }
         if (shakeElement !== undefined) {
             shakeElement(Game.elements.gameplayInput);
@@ -170,10 +185,11 @@ var Game = {
         Game.elements.gameplayInfo[1].innerHTML = '10 Remaining';
         Game.elements.timerEl.innerHTML = '00:00';
         Game.data.guesses = 0;
+        Game.data.results = '';
     },
     updateGameplayInfo: () => {
         Game.elements.gameplayInfo[0].innerHTML = `${Game.data.guesses} Guess${Game.data.guesses === 1? '' : 'es'} / ${MAX_TABS - Object.keys(Game.titles).length} Correct`;
-        Game.elements.gameplayInfo[1].innnerHTML = `${Object.keys(Game.titles).length} Remaining`;
+        Game.elements.gameplayInfo[1].innerHTML = `${Object.keys(Game.titles).length} Remaining`;
     },
     showMessage: (msg, time) => {
         Game.elements.messageEl.innerHTML = msg;
@@ -186,6 +202,21 @@ var Game = {
                 Game.elements.messageEl.classList.add('transparent');
             }, time);
         }
+    },
+    copyResults: () => {
+        if (copyPasta === undefined) {
+            Game.showMessage('There was an error...');
+            console.error('Could not copy pasta.');
+            return
+        }
+        copyPasta([
+            game.elements.tagInput.value,
+            Game.data.guesses,
+            MAX_TABS,
+            Object.keys(Game.titles).length,
+            Game.elements.timerEl.innerHTML,
+            Game.data.results]);
+        Game.showMessage('Copied!');
     }
 };
 
@@ -237,7 +268,7 @@ function onYouTubeIframeAPIReady() {
     setTimeout(() => {
         Game.elements.gameLoadBtn.disabled = false;
     }, 5000);
-    
+
     let id = `${window.location.search}`
     if (id.trim().length === 0) {
         return;

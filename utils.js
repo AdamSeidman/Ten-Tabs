@@ -6,27 +6,27 @@ function shakeElement(el) {
     }, 1000);
 }
 
-const pastaMap = {
+const PastaMap = {
     close: '🟨',
     closer: '🟧',
     wrong: '⬛',
-    '1': '1️⃣',
-    '2': '2️⃣',
-    '3': '3️⃣',
-    '4': '4️⃣',
-    '5': '5️⃣',
-    '6': '6️⃣',
-    '7': '7️⃣',
-    '8': '8️⃣',
-    '9': '9️⃣',
-    '10': '0️⃣'
+    '0': '1️⃣',
+    '1': '2️⃣',
+    '2': '3️⃣',
+    '3': '4️⃣',
+    '4': '5️⃣',
+    '5': '6️⃣',
+    '6': '7️⃣',
+    '7': '8️⃣',
+    '8': '9️⃣',
+    '9': '0️⃣'
 };
 
 var generateCopyPasta = function(arr) {
     if (arr === undefined || !Array.isArray(arr) || crc32 === undefined) {
         return;
     }
-    let result = `Ten Tabs | ${crc32(arr[0])}\n${arr[1]}/${arr[2]}/${arr[3]} (${arr[4]})`;
+    let result = `Ten Tabs | ${crc32(arr[0])}\n${arr[1]}/${arr[2] - arr[3]}/${arr[3]} (${arr[4]})`;
     while (arr[5].length > 0) {
         let str = (arr[5].length >= 10)? arr[5].substring(0, 10) : arr[5];
         arr[5].length = (arr[5].length === str.length)? '' : arr[5].substring(str.length);

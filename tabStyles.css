@@ -46,6 +46,11 @@ button {
     border-radius: 5px;
 }
 
+.victoryWrapper button {
+    display: inline-block;
+    margin: 20px;
+}
+
 button:disabled {
     background-color: #be5555;
     cursor: wait;
