@@ -234,6 +234,10 @@ function onYouTubeIframeAPIReady() {
     }
     Game.data.apiLoaded = true;
 
+    setTimeout(() => {
+        Game.elements.gameLoadBtn.disabled = false;
+    }, 5000);
+    
     let id = `${window.location.search}`
     if (id.trim().length === 0) {
         return;
@@ -247,9 +251,6 @@ function onYouTubeIframeAPIReady() {
         Game.elements.altInputText.classList.remove('hidden');
     }
 
-    setTimeout(() => {
-        Game.elements.gameLoadBtn.disabled = false;
-    }, 5000);
 }
 
 Game.elements.gameplayInput.addEventListener('keypress', e => {
