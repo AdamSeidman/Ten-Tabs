@@ -168,7 +168,7 @@ var Game = {
         Game.data.guesses = 0;
     },
     updateGameplayInfo: () => {
-        Game.elements.gameplayInfo.innerHTML = `${Game.data.guesses} Guess${Game.data.guesses === 1? '' : 'es'} / ${MAX_TABS - Object.keys(Game.titles).length} Correct`;
+        Game.elements.gameplayInfo[0].innerHTML = `${Game.data.guesses} Guess${Game.data.guesses === 1? '' : 'es'} / ${MAX_TABS - Object.keys(Game.titles).length} Correct`;
         Game.elements.gameplayInfo[1].innnerHTML = `${Object.keys(Game.titles).length} Remaining`;
     },
     showMessage: (msg, time) => {
