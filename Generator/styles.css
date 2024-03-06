@@ -5,6 +5,10 @@ input[type=text] {
     box-sizing: border-box;
 }
 
+.red {
+    background: #fba4a4;
+}
+
 button {
     margin-block: 10px;
     background-color: #1ba1b7;

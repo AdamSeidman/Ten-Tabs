@@ -1,5 +1,7 @@
 const textOutput = document.getElementById('textOutput');
 
+const MAX_TABS = 10;
+
 var tag = document.createElement('script');
 tag.src = "https://youtube.com/iframe_api"
 var firstScriptTag = document.getElementsByTagName('script')[0];
@@ -7,8 +9,23 @@ firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
 var players = [];
 
+function setRed(index, highlighted) {
+    let el = document.getElementsByClassName('linkInput')[index];
+    if (highlighted) {
+        el.classList.add('red');
+    } else {
+        el.classList.remove('red');
+    }
+}
+
+function clearRed() {
+    for (let i = 0; i < MAX_TABS; i++) {
+        setRed(i, false);
+    }
+}
+
 function onYouTubeIframeAPIReady() {
-    for (var i = 0; i < 10; i++) {
+    for (var i = 0; i < MAX_TABS; i++) {
         players[i] = createPlayer(i);
     }
 }
@@ -36,13 +53,13 @@ function isAlphaNumeric(str) {
     return true;
 }
 
+var copyWrapper = document.getElementById('copyWrapper');
 function enableCopyButtons(enabled) {
     if (typeof enabled !== 'boolean') return;
-    let copyWrapper = document.getElementById('copyWrapper');
     if (enabled) {
-        copyWrapper.classList.add('hidden');
-    } else {
         copyWrapper.classList.remove('hidden');
+    } else {
+        copyWrapper.classList.add('hidden');
     }
 }
 
@@ -80,11 +97,15 @@ function processId(index) {
 
 function startMasterThread() {
     setTimeout(() => {
-        if (processedCount < 10) {
+        if (processedCount < MAX_TABS) {
             startMasterThread();
         } else if (invalidVideos.length === 1) {
             textOutput.innerHTML = `Video ${invalidVideos[0]} is not playable external to youtube.`;
+            setRed(invalidVideos[0] - 1, true);
         } else if (invalidVideos.length > 1) {
+            invalidVideos.forEach(x => {
+                setRed(x - 1, true);
+            });
             invalidVideos.sort();
             invalidVideos = invalidVideos.map(x => x + 1);
             let last = invalidVideos.pop();
@@ -95,7 +116,7 @@ function startMasterThread() {
         } else {
             let text = '';
             for (let i = 0; i < 11; i++) {
-                for (let j = 0; j < 10; j++) {
+                for (let j = 0; j < MAX_TABS; j++) {
                     text = `${text}${ids[j].charAt(i)}`
                 }
             }
@@ -111,13 +132,15 @@ function startMakeId() {
     let blank = false;
     ids = [];
     enableCopyButtons(false);
+    clearRed();
     textOutput.innerHTML = 'Working...';
-    Array.from(document.getElementsByClassName('linkInput')).forEach(input => {
+    Array.from(document.getElementsByClassName('linkInput')).forEach((input, index) => {
         input = input.value.trim().replace(/\\/g, "/");
         let valid = /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube(-nocookie)?\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|live\/|v\/)?)([\w\-]+)(\S+)?$/;
         if (input.length === 0) {
             error = true;
             blank = true;
+            setRed(index, true);
         } else if (valid.test(input)) {
             let str = input.substring(input.lastIndexOf('/') + 1);
             if (str.includes('feature')) {
@@ -134,14 +157,17 @@ function startMakeId() {
             }
             str = str.trim();
             if (str.length !== 11 || !isAlphaNumeric(str)) {
+                setRed(index, true);
                 error = true;
             } else if (ids.includes(str)) {
+                setRed(index, true);
                 error = true;
                 duplicate = true;
             } else {
                 ids.push(str);
             }
         } else {
+            setRed(index, true);
             error = true;
         }
     })

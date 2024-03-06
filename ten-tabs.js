@@ -22,7 +22,8 @@ var Game = {
         tagInput: document.getElementById('tagInput'),
         gameplayInfo: document.getElementById('gameplayInfo'),
         gameLoadBtn: document.getElementById('gameLoadBtn'),
-        altInputText: document.getElementById('altInputText')
+        altInputText: document.getElementById('altInputText'),
+        messageEl: document.getElementById('message')
     },
     players: [],
     unmuteAll: () => {
@@ -50,6 +51,7 @@ var Game = {
         timerDate: null,
         timerInterval: null,
         difficulty: 0.5,
+        closeThreshold: 0.375,
         apiLoaded: false,
         videosLoaded: 0,
         videoError: false,
@@ -96,14 +98,26 @@ var Game = {
         Game.data.difficulty = difficulty;
         return Game.data.difficulty;
     },
+    setCloseThreshold: threshold => {
+        if (typeof threshold != 'number') {
+            return false;
+        }
+        Game.data.threshold = threshold;
+        return Game.data.threshold;
+    },
     makeGuess: str => {
         if (getSimilarity === undefined) {
             console.error('Function getSimilarity() is undefined!');
             return;
         }
         Game.data.guesses += 1;
+        let close = false;
         for (let i = 0; i < MAX_TABS; i++) {
-            if (Game.titles[`x${i}`] !== undefined && getSimilarity(str, Game.titles[`x${i}`]) >= Game.data.difficulty) {
+            if (Game.titles[`x${i}`] === undefined) {
+                continue;
+            }
+            let similarity = getSimilarity(str, Game.titles[`x${i}`]);
+            if (similarity >= Game.data.difficulty) {
                 let el = document.createElement('li');
                 let author = Game.players[i].playerInfo.videoData.author;
                 author = (author == undefined || author.trim().length == 0)? '' : `- ${author}`;
@@ -118,7 +132,13 @@ var Game = {
                 }
                 Game.updateGameplayInfo();
                 return;
+            } else if (similarity >= Game.data.closeThreshold) {
+                close = true;
             }
+        }
+        shakeElement(Game.elements.gameplayInput);
+        if (close) {
+            Game.showMessage('Close!');
         }
         Game.updateGameplayInfo();
         Game.elements.gameplayInput.value = '';
@@ -148,6 +168,18 @@ var Game = {
     },
     updateGameplayInfo: () => {
         Game.elements.gameplayInfo.innerHTML = `${Game.data.guesses} Guess${Game.data.guesses === 1? '' : 'es'} / ${Object.keys(Game.titles).length} Remaining`;
+    },
+    showMessage: (msg, time) => {
+        Game.elements.messageEl.innerHTML = msg;
+        if (time === undefined) {
+            time = 1000;
+        }
+        Game.elements.messageEl.classList.remove('transparent');
+        if (time !== -1) {
+            setTimeout(() => {
+                Game.elements.messageEl.classList.add('transparent');
+            }, time);
+        }
     }
 };
 
@@ -215,6 +247,14 @@ Game.elements.gameplayInput.addEventListener('keypress', e => {
         Game.makeGuess(Game.elements.gameplayInput.value);
     }
 });
+
+function shakeElement(el) {
+    if (el === undefined) return;
+    el.classList.add('shake');
+    setTimeout(() => {
+        el.classList.remove('shake');
+    }, 1000);
+}
 
 function loadVideoTag() {
     Game.data.videosLoaded = 0;
