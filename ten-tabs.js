@@ -210,7 +210,7 @@ var Game = {
             return
         }
         copyPasta([
-            game.elements.tagInput.value,
+            Game.elements.tagInput.value,
             Game.data.guesses,
             MAX_TABS,
             Object.keys(Game.titles).length,
