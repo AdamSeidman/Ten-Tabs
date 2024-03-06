@@ -136,7 +136,11 @@ var Game = {
                 close = true;
             }
         }
-        shakeElement(Game.elements.gameplayInput);
+        if (shakeElement !== undefined) {
+            shakeElement(Game.elements.gameplayInput);
+        } else {
+            console.error('Function shakeElement() is undefined.');
+        }
         if (close) {
             Game.showMessage('Close!');
         }
@@ -253,14 +257,6 @@ Game.elements.gameplayInput.addEventListener('keypress', e => {
         Game.makeGuess(Game.elements.gameplayInput.value);
     }
 });
-
-function shakeElement(el) {
-    if (el === undefined) return;
-    el.classList.add('shake');
-    setTimeout(() => {
-        el.classList.remove('shake');
-    }, 1000);
-}
 
 function loadVideoTag() {
     Game.data.videosLoaded = 0;
