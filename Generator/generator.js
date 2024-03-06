@@ -157,9 +157,20 @@ function startMakeId() {
             }
             str = str.trim();
             if (str.length !== 11 || !isAlphaNumeric(str)) {
-                setRed(index, true);
-                error = true;
+                if (str.length > 11 && str.includes('&')) {
+                    str = str.substring(0, str.indexOf('&'));
+                    if (str.length === 11 && isAlphaNumeric(str)) {
+                        ids.push(str);
+                    } else {
+                        setRed(index, true);
+                        error = true;
+                    }
+                } else {
+                    setRed(index, true);
+                    error = true;
+                }
             } else if (ids.includes(str)) {
+                if (index == 0) alert(2);
                 setRed(index, true);
                 error = true;
                 duplicate = true;
