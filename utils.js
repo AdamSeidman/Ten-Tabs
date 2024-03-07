@@ -47,3 +47,7 @@ var copyToClipboard = function(str) {
 var copyPasta = function(arr) {
     copyToClipboard(generateCopyPasta(arr));
 }
+
+var redirectToGenerator = function() {
+    window.location.assign("https://seidman-ad.am/Ten-Tabs/Generator/")
+}
