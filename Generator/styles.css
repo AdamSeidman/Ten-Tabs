@@ -26,6 +26,10 @@ button {
     border-radius: 5px;
 }
 
+button:hover {
+    background-color: #167f8f;
+}
+
 strong, span, button {
     margin-left: 40px;
 }
@@ -48,4 +52,10 @@ h3 {
 #copyWrapper {
     float: right;
     margin-right: 6%;
+}
+
+.version {
+    position: fixed;
+    bottom: 1.5em;
+    left: 1.5em;
 }
