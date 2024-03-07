@@ -7,9 +7,9 @@ function shakeElement(el) {
 }
 
 const PastaMap = {
-    close: '🟨 ',
-    closer: '🟧 ',
-    wrong: '⬛ ',
+    close: '🟨',
+    closer: '🟧',
+    wrong: '⬛',
     '0': '1️⃣',
     '1': '2️⃣',
     '2': '3️⃣',
