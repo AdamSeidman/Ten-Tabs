@@ -191,7 +191,6 @@ var Game = {
         Game.elements.introWrapper.classList.toggle('hidden');
         Game.elements.gameplayWrapper.classList.toggle('hidden');
         [...document.getElementsByTagName('li')].forEach(x => x.remove());
-        Game.elements.tagInput.value = '';
         Game.elements.tagInput.classList.remove('hidden');
         Game.elements.failWrapper.classList.remove('hidden');
         Game.elements.gameplayInfo[0].innerHTML = '0 Guesses / 0 Correct';
