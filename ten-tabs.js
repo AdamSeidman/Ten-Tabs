@@ -56,7 +56,7 @@ var Game = {
         videosLoaded: 0,
         videoError: false,
         guesses: 0,
-        results: ''
+        results: []
     },
     startTimer: () => {
         if (Game.data.timerRunning) {
@@ -134,7 +134,7 @@ var Game = {
                 }
                 Game.updateGameplayInfo();
                 if (PastaMap !== undefined) {
-                    Game.data.results += PastaMap[`${i}`];
+                    Game.data.results.push(PastaMap[`${i}`]);
                 }
                 return;
             } else if (similarity >= Game.data.closeThreshold) {
@@ -149,7 +149,7 @@ var Game = {
             } else if (bestSimilarity >= Game.data.closeThreshold) {
                 symbol = PastaMap.close;
             }
-            Game.data.results += symbol;
+            Game.data.results.push(symbol);
         }
         if (shakeElement !== undefined) {
             shakeElement(Game.elements.gameplayInput);
@@ -185,7 +185,7 @@ var Game = {
         Game.elements.gameplayInfo[1].innerHTML = '10 Remaining';
         Game.elements.timerEl.innerHTML = '00:00';
         Game.data.guesses = 0;
-        Game.data.results = '';
+        Game.data.results = [];
     },
     updateGameplayInfo: () => {
         Game.elements.gameplayInfo[0].innerHTML = `${Game.data.guesses} Guess${Game.data.guesses === 1? '' : 'es'} / ${MAX_TABS - Object.keys(Game.titles).length} Correct`;

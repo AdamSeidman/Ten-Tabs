@@ -7,9 +7,9 @@ function shakeElement(el) {
 }
 
 const PastaMap = {
-    close: '🟨',
-    closer: '🟧',
-    wrong: '⬛',
+    close: '🟨 ',
+    closer: '🟧 ',
+    wrong: '⬛ ',
     '0': '1️⃣',
     '1': '2️⃣',
     '2': '3️⃣',
@@ -27,11 +27,13 @@ var generateCopyPasta = function(arr) {
         return;
     }
     let result = `Ten Tabs | ${crc32(arr[0])}\n${arr[1]}/${arr[2] - arr[3]}/${arr[3]} (${arr[4]})`;
-    while (arr[5].length > 0) {
-        let str = (arr[5].length >= 10)? arr[5].substring(0, 10) : arr[5];
-        arr[5].length = (arr[5].length === str.length)? '' : arr[5].substring(str.length);
-        result = `${result}\n${str}`;
-    }
+    arr[5].forEach((el, index) => {
+        if (index % 10 === 0) {
+            result = `${result}\n${el}`;
+        } else {
+            result += el;
+        }
+    });
     return result;
 }
 
