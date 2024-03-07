@@ -23,7 +23,9 @@ var Game = {
         gameplayInfo: document.getElementsByClassName('gameplayInfo'),
         gameLoadBtn: document.getElementById('gameLoadBtn'),
         altInputText: document.getElementById('altInputText'),
-        messageEl: document.getElementById('message')
+        messageEl: document.getElementById('message'),
+        victoryWrapper: document.getElementsByClassName('victoryWrapper')[0],
+        failWrapper: document.getElementsByClassName('failWrapper')[0]
     },
     players: [],
     unmuteAll: () => {
@@ -88,6 +90,8 @@ var Game = {
             return null;
         }
         Game.elements.timerEl.classList.add('victory');
+        Game.elements.victoryWrapper.classList.remove('hidden');
+        Game.elements.failWrapper.classList.add('hidden');
         Game.stopTimer();
         Game.state = GameStates.OVER;
         setTimeout(() => Game.showMessage('You win!', 3500), 50);
@@ -106,6 +110,18 @@ var Game = {
         Game.data.threshold = threshold;
         return Game.data.threshold;
     },
+    revealPlayer: index => {
+        if (Game.titles[`x${index}`] === undefined) {
+            return;
+        }
+        let el = document.createElement('li');
+        let author = Game.players[index].playerInfo.videoData.author;
+        author = (author === undefined || author.trim().length === 0)? '' : `- ${author}`;
+        el.innerHTML = `${Game.titles[`x${index}`][0]} ${author}`;
+        Game.elements.results.append(el);
+        Game.players[index].stopVideo();
+        delete Game.titles[`x${index}`];
+    },
     makeGuess: str => {
         if (getSimilarity === undefined || getBestSimilarity === undefined) {
             console.error('Similarity function(s) are undefined!');
@@ -120,14 +136,8 @@ var Game = {
             }
             let similarity = getBestSimilarity(str, Game.titles[`x${i}`]);
             if (similarity >= Game.data.difficulty) {
-                let el = document.createElement('li');
-                let author = Game.players[i].playerInfo.videoData.author;
-                author = (author == undefined || author.trim().length == 0)? '' : `- ${author}`;
-                el.innerHTML = `${Game.titles[`x${i}`][0]} ${author}`;
-                Game.elements.results.append(el);
-                Game.players[i].stopVideo();
+                Game.revealPlayer(i);
                 Game.elements.gameplayInput.value = '';
-                delete Game.titles[`x${i}`];
                 if (Object.keys(Game.titles).length === 0) {
                     Game.elements.gameplayInput.value = '';
                     Game.victory();
@@ -176,11 +186,14 @@ var Game = {
     },
     reset: () => {
         Game.elements.tagInput.classList.add('hidden');
+        Game.elements.victoryWrapper.classList.add('hidden');
         Game.elements.timerEl.classList.remove('victory');
         Game.elements.introWrapper.classList.toggle('hidden');
         Game.elements.gameplayWrapper.classList.toggle('hidden');
+        [...document.getElementsByTagName('li')].forEach(x => x.remove());
         Game.elements.tagInput.value = '';
         Game.elements.tagInput.classList.remove('hidden');
+        Game.elements.failWrapper.classList.remove('hidden');
         Game.elements.gameplayInfo[0].innerHTML = '0 Guesses / 0 Correct';
         Game.elements.gameplayInfo[1].innerHTML = '10 Remaining';
         Game.elements.timerEl.innerHTML = '00:00';
@@ -217,6 +230,19 @@ var Game = {
             Game.elements.timerEl.innerHTML,
             Game.data.results]);
         Game.showMessage('Copied!');
+    },
+    giveUp: () => {
+        if (Game.state !== GameStates.PLAYING) {
+            return null;
+        }
+        Game.elements.victoryWrapper.classList.remove('hidden');
+        Game.elements.failWrapper.classList.add('hidden');
+        Game.stopTimer();
+        for (let i = 0; i < MAX_TABS; i++) {
+            Game.revealPlayer(i);
+        }
+        Game.state = GameStates.OVER;
+        setTimeout(() => Game.showMessage('You lose.', 3500), 50);
     }
 };
 

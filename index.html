@@ -25,8 +25,11 @@
             <h4 class="gameplayInfo">10 Remaining</h4>
             <h3 id="timer">00:00</h3>
             <ul id="foundVideos"></ul>
+            <div class="failWrapper">
+                <button title="End Guessing" onclick="Game.giveUp()">Give Up</button>
+            </div>
         </div>
-        <div class="victoryWrapper">
+        <div class="victoryWrapper hidden">
             <button title="Copy Game Results to Clipboard" onclick="Game.copyResults()">Copy Results</button>
             <button title="Reset to Default Screen" onclick="doReset()">Play Again</button>
         </div>
@@ -44,7 +47,7 @@
         </div>
         <script type="text/javascript" src="./ten-tabs.js"></script>
         <script type="text/javascript" src="./Lib/similarity.js"></script>
-        <span class="version">v0.0.8</span>
+        <span class="version">v0.0.9</span>
     </div>
 </body>
 </html>

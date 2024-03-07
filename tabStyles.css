@@ -46,7 +46,8 @@ button {
     border-radius: 5px;
 }
 
-.victoryWrapper button {
+.victoryWrapper button,
+.failWrapper button {
     display: inline-block;
     margin: 20px;
 }
