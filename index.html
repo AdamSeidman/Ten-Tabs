@@ -20,13 +20,13 @@
             <button id="gameLoadBtn" onclick="loadVideoTag()" disabled>Start Videos</button><br>
         </div>
         <div class="gameplayWrapper hidden">
-            <input type="text" id="gameplayInput" placeholder="Make your guess">
+            <input type="text" id="gameplayInput" placeholder="Make your guess" title="Press enter to submit a guess!">
             <h4 class="gameplayInfo">0 Guesses / 0 Correct</h4>
             <h4 class="gameplayInfo">10 Remaining</h4>
             <h3 id="timer">00:00</h3>
             <ul id="foundVideos"></ul>
             <div class="failWrapper">
-                <button title="End Guessing" onclick="Game.giveUp()">Give Up</button>
+                <button title="End Guessing" onclick="Game.giveUp()" class="smallBtn">Give Up</button>
             </div>
         </div>
         <div class="victoryWrapper hidden">
@@ -48,7 +48,7 @@
         </div>
         <script type="text/javascript" src="./ten-tabs.js"></script>
         <script type="text/javascript" src="./Lib/similarity.js"></script>
-        <span class="version">v0.0.11</span>
+        <span class="version">v0.0.12</span>
     </div>
 </body>
 </html>
