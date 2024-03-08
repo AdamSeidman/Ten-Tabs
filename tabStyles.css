@@ -113,6 +113,7 @@ li {
     color: gray;
     list-style: none; 
     position: relative;
+    font-family: sans-serif;
 }
 
 li::before {
