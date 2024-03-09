@@ -65,10 +65,12 @@ function enableCopyButtons(enabled) {
 
 function copyUrlToClipboard() {
     navigator.clipboard.writeText(`https://Seidman-Ad.am/Ten-Tabs/${textOutput.innerHTML}`);
+    alert('Copied!');
 }
 
 function copyStringToClipboard() {
     navigator.clipboard.writeText(textOutput.innerHTML);
+    alert('Copied!');
 }
 
 var invalidVideos = [];
