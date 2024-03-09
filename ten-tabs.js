@@ -89,6 +89,7 @@ var Game = {
         if (Game.state !== GameStates.PLAYING) {
             return null;
         }
+        Game.data.results.push(PastaMap.victory);
         Game.elements.timerEl.classList.add('victory');
         Game.elements.victoryWrapper.classList.remove('hidden');
         Game.elements.failWrapper.classList.add('hidden');
@@ -120,10 +121,10 @@ var Game = {
         el.innerHTML = `${Game.titles[`x${index}`][0]} ${author}`;
         if (correct) {
             el.classList.add('correct');
+            delete Game.titles[`x${index}`];
         }
         Game.elements.results.append(el);
         Game.players[index].stopVideo();
-        delete Game.titles[`x${index}`];
     },
     makeGuess: str => {
         if (getSimilarity === undefined || getBestSimilarity === undefined) {
@@ -234,12 +235,13 @@ var Game = {
         Game.showMessage('Copied!');
     },
     giveUp: () => {
-        if (!confirm("Are you sure you want to give up?")) {
-            return;
-        }
         if (Game.state !== GameStates.PLAYING) {
             return null;
         }
+        if (!confirm("Are you sure you want to give up?")) {
+            return;
+        }
+        Game.data.results.push(PastaMap.giveUp);
         Game.elements.victoryWrapper.classList.remove('hidden');
         Game.elements.failWrapper.classList.add('hidden');
         Game.stopTimer();

@@ -10,6 +10,8 @@ const PastaMap = {
     close: '🟨',
     closer: '🟧',
     wrong: '⬛',
+    giveUp: '❌',
+    victory: '✅',
     '0': '1️⃣',
     '1': '2️⃣',
     '2': '3️⃣',
