@@ -21,7 +21,7 @@ var generateCopyPasta = function(arr) {
     }
     let result = `Ten Tabs | ${crc32(arr[0])}\n${arr[1]}/${arr[2] - arr[3]}/${arr[3]} (${arr[4]})`;
     arr[5].forEach((el, index) => {
-        if (index % 10 === 0) {
+        if (index % 8 === 0) {
             result = `${result}\n${el}`;
         } else {
             result += el;
