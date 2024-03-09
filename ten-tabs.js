@@ -142,13 +142,13 @@ var Game = {
             if (similarity >= Game.data.difficulty) {
                 Game.revealPlayer(i, true);
                 Game.elements.gameplayInput.value = '';
+                Game.updateGameplayInfo();
+                if (PastaMap !== undefined) {
+                    Game.data.results.push(`${(i + 1) % 10}${PastaMap.number}`);
+                }
                 if (Object.keys(Game.titles).length === 0) {
                     Game.elements.gameplayInput.value = '';
                     Game.victory();
-                }
-                Game.updateGameplayInfo();
-                if (PastaMap !== undefined) {
-                    Game.data.results.push(PastaMap[`${i}`]);
                 }
                 return;
             } else if (similarity >= Game.data.closeThreshold) {
