@@ -110,7 +110,7 @@ var Game = {
         Game.data.threshold = threshold;
         return Game.data.threshold;
     },
-    revealPlayer: index => {
+    revealPlayer: (index, correct) => {
         if (Game.titles[`x${index}`] === undefined) {
             return;
         }
@@ -118,6 +118,9 @@ var Game = {
         let author = Game.players[index].playerInfo.videoData.author;
         author = (author === undefined || author.trim().length === 0)? '' : `- ${author}`;
         el.innerHTML = `${Game.titles[`x${index}`][0]} ${author}`;
+        if (correct) {
+            el.classList.add('correct');
+        }
         Game.elements.results.append(el);
         Game.players[index].stopVideo();
         delete Game.titles[`x${index}`];
@@ -136,7 +139,7 @@ var Game = {
             }
             let similarity = getBestSimilarity(str, Game.titles[`x${i}`]);
             if (similarity >= Game.data.difficulty) {
-                Game.revealPlayer(i);
+                Game.revealPlayer(i, true);
                 Game.elements.gameplayInput.value = '';
                 if (Object.keys(Game.titles).length === 0) {
                     Game.elements.gameplayInput.value = '';
@@ -167,7 +170,7 @@ var Game = {
             console.error('Function shakeElement() is undefined.');
         }
         if (close) {
-            Game.showMessage('Close!');
+            Game.showMessage('Close!', 2500);
         }
         Game.updateGameplayInfo();
         Game.elements.gameplayInput.value = '';
@@ -231,6 +234,9 @@ var Game = {
         Game.showMessage('Copied!');
     },
     giveUp: () => {
+        if (!confirm("Are you sure you want to give up?")) {
+            return;
+        }
         if (Game.state !== GameStates.PLAYING) {
             return null;
         }

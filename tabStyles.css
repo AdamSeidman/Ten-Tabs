@@ -69,6 +69,10 @@ button:hover {
     margin: 0px 200px;
 }
 
+#timer {
+    margin-block: 0;
+}
+
 #timer, h1, hr, .gameplayInfo {
     font-family: 'Source Sans Pro', Arial, Helvetica, sans-serif;
     font-size: 3em;
@@ -90,10 +94,6 @@ h3#altInputText {
     margin-bottom: -30px;
 }
 
-#timer {
-    margin-top: 0;
-}
-
 .gameplayInfo {
     color: black;
     font-size: 1.5em;
@@ -113,6 +113,7 @@ li {
     color: gray;
     list-style: none; 
     position: relative;
+    font-family: sans-serif;
 }
 
 li::before {
@@ -170,13 +171,15 @@ input:focus {
   left: 50%;
   top: 100px;
   color: #FFF;
-  background-color: rgba(0, 0, 0, 0.85);
+  background-color: rgba(0, 0, 0, 0.8);
   padding: 15px 20px;
   z-index: 2;
   border-radius: 4px;
   transform: translateX(-50%);
   transition: opacity 0.3s ease-out;
   font-weight: 600;
+  font-family: 'Source Sans Pro', Arial, Helvetica, sans-serif;
+  font-size: 1.25em;
 }
 
 .transparent {
@@ -187,4 +190,20 @@ input:focus {
     position: fixed;
     bottom: 1.5em;
     left: 1.5em;
+}
+
+li.correct {
+    color: #adc5b0;
+}
+
+button.smallBtn {
+    line-height: 30px;
+    margin: 6em;
+    font-size: 12px;
+    min-width: 90px;
+    color: #272323;
+}
+
+.victoryWrapper {
+    margin-top: 30px;
 }
