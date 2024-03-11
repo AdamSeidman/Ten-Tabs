@@ -11,6 +11,9 @@ var players = [];
 
 function setRed(index, highlighted) {
     let el = document.getElementsByClassName('linkInput')[index];
+    if (el === undefined) {
+        console.error('Had an undefined element error.', index, el);
+    }
     if (highlighted) {
         el.classList.add('red');
     } else {
@@ -89,12 +92,12 @@ function processId(index) {
                 }
                 players[index].stopVideo();
                 processedCount += 1;
-            }, 750);
+            }, 1500);
         } else {
             players[index].stopVideo();
             processedCount += 1;
         }
-    }, 100);
+    }, 1000);
 }
 
 function startMasterThread() {
@@ -133,6 +136,8 @@ function startMakeId() {
     let duplicate = false;
     let blank = false;
     ids = [];
+    invalidVideos = [];
+    processedCount = 0;
     enableCopyButtons(false);
     clearRed();
     textOutput.innerHTML = 'Working...';
